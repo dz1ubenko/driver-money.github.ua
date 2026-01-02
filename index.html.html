@@ -1,0 +1,1842 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XSQTYKRF3Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XSQTYKRF3Q');
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Driver Money</title>
+<style>
+:root {
+    --bg-primary: #0f0f0f;
+    --bg-secondary: #1a1a1a;
+    --bg-tertiary: #2a2a2a;
+    --text-primary: #fff;
+    --text-secondary: #aaa;
+    --accent: #4CAF50;
+    --border: #2a2a2a;
+    --modal-bg: #1a1a1a;
+    --error: #f44336;
+}
+
+body.light-theme {
+    --bg-primary: #f5f5f5;
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #e8e8e8;
+    --text-primary: #1a1a1a;
+    --text-secondary: #666;
+    --accent: #2d7c2d;
+    --border: #ddd;
+    --modal-bg: #ffffff;
+    --error: #d32f2f;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    overflow-x: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* SPLASH SCREEN */
+.splash {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    animation: fadeOutSplash 0.5s ease-in-out 2.5s forwards;
+}
+
+.splash-content {
+    text-align: center;
+}
+
+.splash-money-bag {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    animation: bounceIn 1s ease-out;
+    filter: drop-shadow(0 0 20px rgba(76, 175, 80, 0.5));
+}
+
+.splash-text {
+    font-size: 4rem;
+    font-weight: 900;
+    text-align: center;
+    color: var(--accent);
+    animation: fadeInText 1.5s ease-out;
+    margin-bottom: 10px;
+    letter-spacing: 3px;
+    text-shadow: 0 0 30px rgba(76, 175, 80, 0.4), 0 0 60px rgba(76, 175, 80, 0.2);
+}
+
+.splash-subtitle {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    animation: fadeInText 1.5s ease-out 0.3s backwards;
+    font-weight: 600;
+    word-spacing: 8px;
+}
+
+@keyframes bounceIn {
+    from {
+        opacity: 0;
+        transform: scale(0.3);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes fadeInText {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOutSplash {
+    to {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+/* AUTH PAGE */
+.auth-page {
+    display: none;
+    min-height: 100vh;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.auth-page.active {
+    display: flex;
+}
+
+.auth-container {
+    background: var(--bg-secondary);
+    border-radius: 20px;
+    padding: 40px 30px;
+    max-width: 400px;
+    width: 100%;
+    border: 2px solid var(--accent);
+    box-shadow: 0 8px 32px rgba(76, 175, 80, 0.2);
+}
+
+.auth-logo {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.auth-logo .icon {
+    font-size: 3rem;
+    margin-bottom: 10px;
+    filter: drop-shadow(0 0 10px rgba(76, 175, 80, 0.3));
+}
+
+.auth-logo h1 {
+    font-size: 2rem;
+    color: var(--accent);
+    font-weight: 900;
+    letter-spacing: 2px;
+    margin-bottom: 5px;
+}
+
+.auth-logo p {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.auth-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+    border-bottom: 2px solid var(--border);
+}
+
+.auth-tab {
+    flex: 1;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    padding: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s;
+    font-size: 1rem;
+}
+
+.auth-tab.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+}
+
+.auth-form {
+    display: none;
+}
+
+.auth-form.active {
+    display: block;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--accent);
+    font-size: 0.9rem;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 14px;
+    border: 2px solid var(--bg-tertiary);
+    border-radius: 10px;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+.error-message {
+    color: var(--error);
+    font-size: 0.85rem;
+    margin-top: 5px;
+    display: none;
+}
+
+.error-message.show {
+    display: block;
+}
+
+.auth-btn {
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--accent), #45a049);
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.auth-btn:active {
+    transform: scale(0.98);
+}
+
+.logout-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: var(--bg-tertiary);
+    border: none;
+    color: var(--accent);
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    z-index: 100;
+    transition: all 0.3s ease;
+}
+
+.logout-btn:active {
+    transform: scale(0.95);
+}
+
+/* PAGES */
+.page {
+    display: none;
+    padding: 20px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.page.active {
+    display: block;
+    animation: slideIn 0.3s ease-out;
+}
+
+/* MAIN PAGE */
+.header {
+    text-align: center;
+    margin: 30px 0;
+    position: relative;
+}
+
+.theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: transparent;
+    border: none;
+    color: var(--accent);
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.3rem;
+    transition: all 0.3s ease;
+    z-index: 100;
+}
+
+.theme-toggle:active {
+    transform: scale(0.95);
+}
+
+.settings-toggle {
+    position: fixed;
+    top: 70px;
+    right: 20px;
+    background: transparent;
+    border: none;
+    color: var(--accent);
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.3rem;
+    transition: all 0.3s ease;
+    z-index: 100;
+}
+
+.settings-toggle:active {
+    transform: scale(0.95);
+}
+
+.header h1 {
+    font-size: 2.5rem;
+    color: var(--accent);
+    margin-bottom: 5px;
+    font-weight: 900;
+    letter-spacing: 1px;
+}
+
+.header .subtitle {
+    font-size: 1.8rem;
+    color: var(--text-secondary);
+    font-weight: 300;
+    letter-spacing: 3px;
+}
+
+.total-amount {
+    background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+    border-radius: 15px;
+    padding: 30px;
+    text-align: center;
+    margin: 20px 0;
+    border: 2px solid var(--accent);
+    box-shadow: 0 8px 16px rgba(76, 175, 80, 0.2);
+}
+
+.total-amount .amount {
+    font-size: 3rem;
+    font-weight: bold;
+    color: var(--accent);
+    margin: 10px 0;
+}
+
+.total-amount .currency {
+    color: var(--text-secondary);
+    font-size: 1.2rem;
+}
+
+.button-group {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.btn {
+    flex: 1;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--accent), #45a049);
+    color: white;
+}
+
+.btn-primary:active {
+    transform: scale(0.95);
+    box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
+}
+
+.btn-secondary {
+    background: var(--bg-tertiary);
+    color: var(--accent);
+    border: 2px solid var(--accent);
+}
+
+.btn-secondary:active {
+    transform: scale(0.95);
+}
+
+.btn-danger {
+    background: #d32f2f;
+    color: white;
+    padding: 10px;
+    font-size: 0.85rem;
+}
+
+.btn-danger:active {
+    transform: scale(0.95);
+}
+
+/* FORM */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: var(--accent);
+}
+
+.form-group select,
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid var(--bg-tertiary);
+    border-radius: 8px;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.form-group select:focus,
+.form-group input:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+/* HISTORY */
+.history-item {
+    background: var(--bg-secondary);
+    border-left: 4px solid var(--accent);
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.history-item:active {
+    transform: translateX(5px);
+}
+
+.history-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.history-item-date {
+    font-weight: bold;
+    color: var(--accent);
+}
+
+.history-item-amount {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: var(--accent);
+}
+
+.history-item-company {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.history-item-detail {
+    color: #888;
+    font-size: 0.85rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* MODAL */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal.active {
+    display: flex;
+    animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-content {
+    background: var(--modal-bg);
+    border: 2px solid var(--accent);
+    border-radius: 15px;
+    padding: 25px;
+    width: 100%;
+    max-width: 450px;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: slideUp 0.3s;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-header {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: var(--accent);
+}
+
+.close-modal {
+    float: right;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-secondary);
+}
+
+.close-modal:active {
+    color: var(--accent);
+}
+
+/* COMPUTED */
+.computed-result {
+    background: var(--bg-tertiary);
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 15px;
+    text-align: center;
+    border: 1px solid var(--accent);
+}
+
+.computed-result .label {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+
+.computed-result .value {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--accent);
+}
+
+/* HEADER WITH BACK */
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+
+.back-btn {
+    background: var(--bg-tertiary);
+    border: none;
+    color: var(--accent);
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.back-btn:active {
+    transform: scale(0.95);
+}
+
+/* FILTER MODES */
+.filter-mode-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--border);
+}
+
+.filter-mode-btn {
+    flex: 1;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    padding: 12px 15px;
+    cursor: pointer;
+    font-weight: 600;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s;
+    font-size: 0.95rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.filter-mode-btn .icon {
+    font-size: 1.3rem;
+    line-height: 1;
+}
+
+.filter-mode-btn .text {
+    font-size: 0.85rem;
+}
+
+.filter-mode-btn.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+}
+
+.filter-content {
+    display: none;
+}
+
+.filter-content.active {
+    display: block;
+}
+
+.filter-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.filter-group input,
+.filter-group select {
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    transition: border-color 0.3s;
+}
+
+.filter-group input:focus,
+.filter-group select:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+.filter-button-group {
+    display: flex;
+    gap: 10px;
+}
+
+.filter-btn {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    background: var(--accent);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.filter-btn:active {
+    transform: scale(0.95);
+}
+
+.filter-btn.reset {
+    background: var(--bg-tertiary);
+    color: var(--accent);
+    border: 1px solid var(--accent);
+}
+
+/* DATE WHEEL PICKER */
+.date-picker-wrapper {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.wheel-picker-container {
+    flex: 1;
+}
+
+.wheel-picker-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: block;
+}
+
+.wheel-picker {
+    height: 120px;
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.wheel-picker-scroll {
+    flex: 1;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    scroll-snap-type: y mandatory;
+    display: flex;
+    flex-direction: column;
+    padding: 40px 0;
+    position: relative;
+}
+
+.wheel-picker-scroll::-webkit-scrollbar {
+    width: 0;
+}
+
+.wheel-picker-item {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    flex-shrink: 0;
+    scroll-snap-align: center;
+    transition: color 0.2s;
+}
+
+.wheel-picker-item.selected {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.wheel-picker::before,
+.wheel-picker::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 40px;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.wheel-picker::before {
+    top: 0;
+    background: linear-gradient(to bottom, var(--bg-secondary), transparent);
+}
+
+.wheel-picker::after {
+    bottom: 0;
+    background: linear-gradient(to top, var(--bg-secondary), transparent);
+}
+
+.wheel-picker-center-line {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 40px;
+    border-top: 1px solid var(--accent);
+    border-bottom: 1px solid var(--accent);
+    transform: translateY(-50%);
+    pointer-events: none;
+    z-index: 5;
+}
+
+/* FOOTER */
+.footer {
+    text-align: center;
+    padding: 30px 20px 20px;
+    margin-top: 40px;
+    border-top: 1px solid var(--border);
+}
+
+.telegram-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    background: linear-gradient(135deg, #0088cc, #0073b3);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.telegram-link:active {
+    transform: scale(0.95);
+    opacity: 0.9;
+}
+
+.telegram-link svg {
+    width: 28px;
+    height: 28px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 480px) {
+    .filter-row {
+        grid-template-columns: 1fr;
+    }
+
+    .filter-button-group {
+        flex-direction: column;
+    }
+
+    .date-picker-wrapper {
+        flex-direction: column;
+    }
+
+    .wheel-picker-container {
+        width: 100%;
+    }
+
+    .header h1 {
+        font-size: 2rem;
+    }
+
+    .total-amount .amount {
+        font-size: 2.5rem;
+    }
+
+    .btn {
+        padding: 12px 15px;
+        font-size: 0.9rem;
+    }
+}
+</style>
+</head>
+<body>
+    <!-- SPLASH SCREEN -->
+    <div class="splash" id="splash">
+        <div class="splash-content">
+            <div class="splash-money-bag">💰</div>
+            <div class="splash-text">DMC</div>
+            <div class="splash-subtitle">driver money calculator</div>
+        </div>
+    </div>
+
+    <!-- AUTH PAGE -->
+    <div class="auth-page" id="authPage">
+        <div class="auth-container">
+            <div class="auth-logo">
+                <div class="icon">💰</div>
+                <h1>DMC</h1>
+                <p>Driver Money Calculator</p>
+            </div>
+
+            <div class="auth-tabs">
+                <button class="auth-tab active" onclick="app.switchAuthTab('login')">Вхід</button>
+                <button class="auth-tab" onclick="app.switchAuthTab('register')">Реєстрація</button>
+            </div>
+
+            <!-- LOGIN FORM -->
+            <form class="auth-form active" id="loginForm" onsubmit="app.handleLogin(event)">
+                <div class="input-group">
+                    <label>Email або ім'я користувача</label>
+                    <input type="text" id="loginUsername" required>
+                    <div class="error-message" id="loginError"></div>
+                </div>
+                <div class="input-group">
+                    <label>Пароль</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="auth-btn">Увійти</button>
+            </form>
+
+            <!-- REGISTER FORM -->
+            <form class="auth-form" id="registerForm" onsubmit="app.handleRegister(event)">
+                <div class="input-group">
+                    <label>Ім'я користувача</label>
+                    <input type="text" id="registerUsername" required minlength="3">
+                    <div class="error-message" id="registerUsernameError"></div>
+                </div>
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" id="registerEmail" required>
+                    <div class="error-message" id="registerEmailError"></div>
+                </div>
+                <div class="input-group">
+                    <label>Пароль</label>
+                    <input type="password" id="registerPassword" required minlength="6">
+                    <div class="error-message" id="registerPasswordError"></div>
+                </div>
+                <div class="input-group">
+                    <label>Підтвердження паролю</label>
+                    <input type="password" id="registerPasswordConfirm" required minlength="6">
+                    <div class="error-message" id="registerPasswordConfirmError"></div>
+                </div>
+                <button type="submit" class="auth-btn">Зареєструватися</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- LOGOUT BUTTON -->
+    <button class="logout-btn" id="logoutBtn" style="display: none;" onclick="app.logout()">🚪 Вийти</button>
+
+    <!-- MAIN PAGE -->
+    <div class="page" id="mainPage">
+        <button class="theme-toggle" onclick="app.toggleTheme()" id="themeToggle" title="Змінити тему">☀️</button>
+        <button class="settings-toggle" onclick="app.showSettings()" id="settingsToggle" title="Налаштування">⚙️</button>
+        <div class="header">
+            <h1>DRIVER MONEY</h1>
+            <div class="subtitle">CALCULATOR</div>
+        </div>
+
+        <div class="total-amount">
+            <p>Заробленнязамісяць</p>
+            <div class="amount" id="totalAmount">0</div>
+            <div class="currency">грн</div>
+            <p style="color: #888; font-size: 0.85rem; margin-top: 8px;">З 1 числа поточного місяця</p>
+        </div>
+
+        <div class="button-group">
+            <button class="btn btn-primary" onclick="app.showAddDay()">➕ Додати день</button>
+            <button class="btn btn-secondary" onclick="app.goToHistory()">🔄 Історія</button>
+        </div>
+
+        <div class="footer">
+            <a href="https://t.me/dz1ubenko" target="_blank" class="telegram-link" title="Написати в Telegram @dz1ubenko">
+                <img src="image/telegram-icon.png" alt="Telegram" style="width: 28px; height: 28px;">
+            </a>
+        </div>
+    </div>
+
+    <!-- ADD DAY PAGE -->
+    <div class="page" id="addDayPage">
+        <div class="top-bar">
+            <button class="back-btn" onclick="app.goToMain()">← Назад</button>
+            <span style="font-weight: bold; color: #4CAF50;">Новий день</span>
+            <div></div>
+        </div>
+
+        <div class="form-group">
+            <label>Компанія</label>
+            <select id="companySelect" onchange="app.onCompanyChange()">
+                <option value="">Виберіть компанію</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Або додайте нову компанію</label>
+            <button class="btn btn-secondary" onclick="app.showAddCompany()" style="width: 100%;">➕ Додати компанію</button>
+        </div>
+
+        <div id="inputFieldsContainer"></div>
+
+        <div class="computed-result" id="computedResult" style="display: none;">
+            <div class="label">Розрахункова сума:</div>
+            <div class="value" id="computedAmount">0 грн</div>
+        </div>
+
+        <button class="btn btn-primary" onclick="app.saveDay()" style="width: 100%; margin-top: 20px;">✅ Зберегти</button>
+    </div>
+
+    <!-- HISTORY PAGE -->
+    <div class="page" id="historyPage">
+        <div class="top-bar">
+            <button class="back-btn" onclick="app.goToMain()">← Назад</button>
+            <span style="font-weight: bold; color: var(--accent);">Історія</span>
+            <div></div>
+        </div>
+
+        <div class="filter-mode-buttons">
+            <button class="filter-mode-btn active" onclick="app.setFilterMode('current-month')">
+                <span class="icon">📅</span>
+                <span class="text">Поточний місяць</span>
+            </button>
+            <button class="filter-mode-btn" onclick="app.setFilterMode('all-time')">
+                <span class="icon">📆</span>
+                <span class="text">Весь час</span>
+            </button>
+            <button class="filter-mode-btn" onclick="app.setFilterMode('custom')">
+                <span class="icon">🔍</span>
+                <span class="text">Вибірково</span>
+            </button>
+        </div>
+
+        <div class="filter-container">
+            <div id="currentMonthContent" class="filter-content active">
+                <div class="filter-row">
+                    <div class="filter-group">
+                        <label>Компанія</label>
+                        <select id="filterCompany">
+                            <option value="">Усі компанії</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="filter-btn" onclick="app.applyFilters()" style="width: 100%;">Застосувати</button>
+            </div>
+
+            <div id="allTimeContent" class="filter-content">
+                <div class="filter-row">
+                    <div class="filter-group">
+                        <label>Компанія</label>
+                        <select id="filterCompanyAllTime">
+                            <option value="">Усі компанії</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="filter-btn" onclick="app.applyAllTimeFilter()" style="width: 100%;">Застосувати</button>
+            </div>
+
+            <div id="customContent" class="filter-content">
+                <div class="filter-row">
+                    <div class="date-picker-wrapper" style="grid-column: 1 / -1;">
+                        <div class="wheel-picker-container">
+                            <label class="wheel-picker-label">З дати</label>
+                            <div class="wheel-picker" id="wheelPickerFrom">
+                                <div class="wheel-picker-center-line"></div>
+                                <div class="wheel-picker-scroll" id="wheelScrollFrom"></div>
+                            </div>
+                        </div>
+                        <div class="wheel-picker-container">
+                            <label class="wheel-picker-label">По дату</label>
+                            <div class="wheel-picker" id="wheelPickerTo">
+                                <div class="wheel-picker-center-line"></div>
+                                <div class="wheel-picker-scroll" id="wheelScrollTo"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <label>Компанія</label>
+                        <select id="filterCompanyCustom">
+                            <option value="">Усі компанії</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="filter-btn" onclick="app.applyFilters()" style="width: 100%;">Застосувати</button>
+            </div>
+
+            <button class="filter-btn reset" onclick="app.resetFilters()" style="width: 100%; margin-top: 10px;">✕ Очистити</button>
+        </div>
+
+        <div id="historyList"></div>
+    </div>
+
+    <!-- MODAL: ADD COMPANY -->
+    <div class="modal" id="addCompanyModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close-modal" onclick="app.closeModal()">&times;</span>
+                Додати компанію
+            </div>
+
+            <div class="form-group">
+                <label>Назва компанії</label>
+                <input type="text" id="newCompanyName" placeholder="Введіть назву">
+            </div>
+
+            <div class="form-group">
+                <label>Тип оплати</label>
+                <select id="paymentType" onchange="app.updatePaymentTypeLabel()">
+                    <option value="km">За кілометри (км)</option>
+                    <option value="trip">За ходки</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label id="paymentPriceLabel">Ціна за км (грн)</label>
+                <input type="number" id="paymentPrice" placeholder="0" step="0.1">
+            </div>
+
+            <button class="btn btn-primary" onclick="app.saveNewCompany()" style="width: 100%;">✅ Створити</button>
+            <button class="btn btn-secondary" onclick="app.closeModal()" style="width: 100%; margin-top: 10px;">Скасувати</button>
+        </div>
+    </div>
+
+    <!-- MODAL: SETTINGS -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close-modal" onclick="app.closeModal()">&times;</span>
+                <span id="settingsTitle">Налаштування</span>
+            </div>
+
+            <div class="form-group">
+                <label id="languageLabel">Мова</label>
+                <select id="languageSelect" onchange="app.changeLanguage()">
+                    <option value="uk">Українська</option>
+                    <option value="en">English</option>
+                    <option value="ru">рашиська</option>
+                </select>
+            </div>
+
+            <button class="btn btn-secondary" onclick="app.closeModal()" style="width: 100%; margin-top:20px;">Закрити</button>
+        </div>
+    </div>
+
+<script>
+const app = {
+    currentUser: null,
+    users: {},
+    companies: {
+        novus: { name: '🚚 Компанія NOVUS', type: 'km', rates: [{ min: 0, max:10, price: 10 }, { min: 20, max: Infinity, price: 17 }], regional: 4.5 },
+        raben: { name: '🚛 Компанія Raben', type: 'trip', price: 850 },
+        voisk: { name: '🪖 ВЧ', type: 'trip', price: 3000 }
+    },
+    entries: [],
+    currentMonth: new Date().getMonth(),
+    currentYear: new Date().getFullYear(),
+    selectedCompany: null,
+    currentAmount: 0,
+    currentLanguage: 'uk',
+
+    init() {
+        setTimeout(() => document.getElementById('splash').remove(), 3000);
+        this.loadTheme();
+        this.loadLanguage();
+        this.loadUsers();
+        this.checkAuth();
+    },
+
+    // AUTH METHODS
+    loadUsers() {
+        const stored = localStorage.getItem('dmc_users');
+        if (stored) {
+            this.users = JSON.parse(stored);
+        }
+    },
+
+    saveUsers() {
+        localStorage.setItem('dmc_users', JSON.stringify(this.users));
+    },
+
+    checkAuth() {
+        const sessionUser = sessionStorage.getItem('dmc_current_user');
+        if (sessionUser) {
+            this.currentUser = sessionUser;
+            this.showMainApp();
+        } else {
+            this.showAuthPage();
+        }
+    },
+
+    showAuthPage() {
+        document.getElementById('authPage').classList.add('active');
+        document.getElementById('logoutBtn').style.display = 'none';
+    },
+
+    showMainApp() {
+        document.getElementById('authPage').classList.remove('active');
+        document.getElementById('logoutBtn').style.display = 'block';
+        this.loadUserData();
+        this.renderCompanies();
+        this.updateTotal();
+        this.showPage('mainPage');
+    },
+
+    switchAuthTab(tab) {
+        document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+        
+        if (tab === 'login') {
+            document.querySelectorAll('.auth-tab')[0].classList.add('active');
+            document.getElementById('loginForm').classList.add('active');
+        } else {
+            document.querySelectorAll('.auth-tab')[1].classList.add('active');
+            document.getElementById('registerForm').classList.add('active');
+        }
+    },
+
+    handleLogin(e) {
+        e.preventDefault();
+        const username = document.getElementById('loginUsername').value.trim();
+        const password = document.getElementById('loginPassword').value;
+        const errorEl = document.getElementById('loginError');
+
+        // Find user by username or email
+        const user = Object.values(this.users).find(u => 
+            u.username === username || u.email === username
+        );
+
+        if (!user) {
+            errorEl.textContent = 'Користувача не знайдено';
+            errorEl.classList.add('show');
+            return;
+        }
+
+        if (user.password !== password) {
+            errorEl.textContent = 'Неправильний пароль';
+            errorEl.classList.add('show');
+            return;
+        }
+
+        // Success
+        this.currentUser = user.username;
+        sessionStorage.setItem('dmc_current_user', user.username);
+        errorEl.classList.remove('show');
+        this.showMainApp();
+    },
+
+    handleRegister(e) {
+        e.preventDefault();
+        const username = document.getElementById('registerUsername').value.trim();
+        const email = document.getElementById('registerEmail').value.trim();
+        const password = document.getElementById('registerPassword').value;
+        const passwordConfirm = document.getElementById('registerPasswordConfirm').value;
+
+        // Clear errors
+        document.querySelectorAll('#registerForm .error-message').forEach(el => el.classList.remove('show'));
+
+        // Validation
+        if (username.length < 3) {
+            this.showRegisterError('registerUsernameError', 'Ім\'я має бути не менше 3 символів');
+            return;
+        }
+
+        if (this.users[username]) {
+            this.showRegisterError('registerUsernameError', 'Це ім\'я вже зайняте');
+            return;
+        }
+
+        if (Object.values(this.users).some(u => u.email === email)) {
+            this.showRegisterError('registerEmailError', 'Цей email вже використовується');
+            return;
+        }
+
+        if (password.length < 6) {
+            this.showRegisterError('registerPasswordError', 'Пароль має бути не менше 6 символів');
+            return;
+        }
+
+        if (password !== passwordConfirm) {
+            this.showRegisterError('registerPasswordConfirmError', 'Паролі не співпадають');
+            return;
+        }
+
+        // Create user
+        this.users[username] = {
+            username,
+            email,
+            password,
+            createdAt: new Date().toISOString(),
+            data: {
+                entries: [],
+                customCompanies: {}
+            }
+        };
+
+        this.saveUsers();
+        
+        // Auto login
+        this.currentUser = username;
+        sessionStorage.setItem('dmc_current_user', username);
+        this.showMainApp();
+    },
+
+    showRegisterError(elementId, message) {
+        const el = document.getElementById(elementId);
+        el.textContent = message;
+        el.classList.add('show');
+    },
+
+    logout() {
+        if (confirm('Ви впевнені, що хочете вийти?')) {
+            this.currentUser = null;
+            sessionStorage.removeItem('dmc_current_user');
+            this.entries = [];
+            document.getElementById('loginUsername').value = '';
+            document.getElementById('loginPassword').value = '';
+            this.showAuthPage();
+        }
+    },
+
+    loadUserData() {
+        if (!this.currentUser || !this.users[this.currentUser]) return;
+        
+        const userData = this.users[this.currentUser].data;
+        this.entries = userData.entries || [];
+        this.companies = { ...this.companies, ...userData.customCompanies };
+        this.filterCurrentMonth();
+    },
+
+    saveUserData() {
+        if (!this.currentUser || !this.users[this.currentUser]) return;
+
+        const customCompanies = {};
+        Object.keys(this.companies).forEach(key => {
+            if (!['novus', 'raben', 'voisk'].includes(key)) {
+                customCompanies[key] = this.companies[key];
+            }
+        });
+
+        this.users[this.currentUser].data = {
+            entries: this.entries,
+            customCompanies
+        };
+
+        this.saveUsers();
+    },
+
+    loadLanguage() {
+        const saved = localStorage.getItem('language') || 'uk';
+        this.currentLanguage = saved;
+        if (document.getElementById('languageSelect')) {
+            document.getElementById('languageSelect').value = saved;
+        }
+    },
+
+    changeLanguage() {
+        const selected = document.getElementById('languageSelect').value;
+        this.currentLanguage = selected;
+        localStorage.setItem('language', selected);
+    },
+
+    showSettings() {
+        document.getElementById('settingsModal').classList.add('active');
+    },
+
+    loadTheme() {
+        const theme = localStorage.getItem('theme') || 'dark';
+        if (theme === 'light') {
+            document.body.classList.add('light-theme');
+            if (document.getElementById('themeToggle')) {
+                document.getElementById('themeToggle').textContent = '🌙';
+            }
+        } else {
+            document.body.classList.remove('light-theme');
+            if (document.getElementById('themeToggle')) {
+                document.getElementById('themeToggle').textContent = '☀️';
+            }
+        }
+    },
+
+    toggleTheme() {
+        const isLight = document.body.classList.toggle('light-theme');
+        const newTheme = isLight ? 'light' : 'dark';
+        localStorage.setItem('theme', newTheme);
+        document.getElementById('themeToggle').textContent = isLight ? '🌙' : '☀️';
+    },
+
+    filterCurrentMonth() {
+        const now = new Date();
+        const currentMonth = now.getMonth();
+        const currentYear = now.getFullYear();
+
+        if (this.currentMonth !== currentMonth || this.currentYear !== currentYear) {
+            this.entries = [];
+            this.currentMonth = currentMonth;
+            this.currentYear = currentYear;
+            this.saveUserData();
+        }
+    },
+
+    renderCompanies() {
+        const select = document.getElementById('companySelect');
+        if (!select) return;
+        
+        select.innerHTML = '<option value="">Виберіть компанію</option>';
+        Object.entries(this.companies).forEach(([key, company]) => {
+            const option = document.createElement('option');
+            option.value = key;
+            option.textContent = company.name;
+            select.appendChild(option);
+        });
+    },
+
+    onCompanyChange() {
+        const key = document.getElementById('companySelect').value;
+        if (!key) {
+            document.getElementById('inputFieldsContainer').innerHTML = '';
+            return;
+        }
+
+        this.selectedCompany = { key, ...this.companies[key] };
+        const container = document.getElementById('inputFieldsContainer');
+
+        if (this.selectedCompany.type === 'km') {
+            const isNovus = key === 'novus';
+            container.innerHTML = `
+                <div class="form-group">
+                    <label>Кілометри (км)</label>
+                    <input type="number" id="kmInput" placeholder="0" step="0.1" onchange="app.computeAmount()">
+                </div>
+                ${isNovus ? `<div class="form-group">
+                    <label>
+                        <input type="checkbox" id="regionalCheckbox" onchange="app.computeAmount()">
+                        Регіональні км?
+                    </label>
+                </div>` : ''}
+            `;
+        } else {
+            container.innerHTML = `
+                <div class="form-group">
+                    <label>Ходки</label>
+                    <input type="number" id="tripInput" placeholder="0" onchange="app.computeAmount()">
+                </div>
+            `;
+        }
+
+        document.getElementById('computedResult').style.display = 'none';
+    },
+
+    computeAmount() {
+        if (!this.selectedCompany) return;
+
+        const result = document.getElementById('computedResult');
+        let amount = 0;
+
+        if (this.selectedCompany.type === 'km') {
+            const km = parseFloat(document.getElementById('kmInput').value) || 0;
+            const isRegional = document.getElementById('regionalCheckbox')?.checked;
+
+            if (this.selectedCompany.key === 'novus') {
+                if (isRegional) {
+                    amount = km * this.selectedCompany.regional;
+                } else {
+                    const rates = this.selectedCompany.rates;
+                    let remaining = km;
+                    rates.forEach(rate => {
+                        const inRange = Math.min(remaining, Math.max(0, rate.max - rate.min));
+                        amount += inRange * rate.price;
+                        remaining -= inRange;
+                    });
+                }
+            } else {
+                amount = km * this.selectedCompany.price;
+            }
+        } else {
+            const trips = parseInt(document.getElementById('tripInput').value) || 0;
+            amount = trips * this.selectedCompany.price;
+        }
+
+        this.currentAmount = amount;
+        document.getElementById('computedAmount').textContent = `${amount.toFixed(2)} грн`;
+        result.style.display = 'block';
+    },
+
+    saveDay() {
+        if (!this.selectedCompany || this.currentAmount === 0) {
+            alert('Заповніть усі поля');
+            return;
+        }
+
+        const input = this.selectedCompany.type === 'km' ? 
+            document.getElementById('kmInput').value : 
+            document.getElementById('tripInput').value;
+
+        this.entries.push({
+            date: new Date().toISOString().split('T')[0],
+            company: this.selectedCompany.name,
+            type: this.selectedCompany.type,
+            input: parseFloat(input),
+            amount: this.currentAmount
+        });
+
+        this.saveUserData();
+        this.updateTotal();
+        this.goToMain();
+        alert('День збережено!');
+    },
+
+    updateTotal() {
+        const total = this.entries.reduce((sum, entry) => sum + entry.amount, 0);
+        const el = document.getElementById('totalAmount');
+        if (el) {
+            el.textContent = total.toFixed(2);
+        }
+    },
+
+    showAddCompany() {
+        document.getElementById('addCompanyModal').classList.add('active');
+    },
+
+    closeModal() {
+        document.getElementById('addCompanyModal').classList.remove('active');
+        document.getElementById('settingsModal').classList.remove('active');
+    },
+
+    updatePaymentTypeLabel() {
+        const type = document.getElementById('paymentType').value;
+        document.getElementById('paymentPriceLabel').textContent = 
+            type === 'km' ? 'Ціна за км (грн)' : 'Ціна за ходку (грн)';
+    },
+
+    saveNewCompany() {
+        const name = document.getElementById('newCompanyName').value.trim();
+        const type = document.getElementById('paymentType').value;
+        const price = parseFloat(document.getElementById('paymentPrice').value);
+
+        if (!name || !price || price <= 0) {
+            alert('Заповніть усі поля правильно');
+            return;
+        }
+
+        const key = 'custom_' + Date.now();
+        this.companies[key] = { name, type, price };
+        this.saveUserData();
+        this.renderCompanies();
+        this.closeModal();
+
+        document.getElementById('newCompanyName').value = '';
+        document.getElementById('paymentPrice').value = '';
+        alert('Компанія додана!');
+    },
+
+    goToHistory() {
+        this.showPage('historyPage');
+        this.populateFilterCompanies();
+        this.initWheelPickers();
+        this.setFilterMode('current-month');
+        this.renderHistory();
+    },
+
+    setFilterMode(mode) {
+        document.querySelectorAll('.filter-mode-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.closest('.filter-mode-btn').classList.add('active');
+
+        document.querySelectorAll('.filter-content').forEach(content => content.classList.remove('active'));
+        
+        if (mode === 'current-month') {
+            document.getElementById('currentMonthContent').classList.add('active');
+        } else if (mode === 'all-time') {
+            document.getElementById('allTimeContent').classList.add('active');
+        } else if (mode === 'custom') {
+            document.getElementById('customContent').classList.add('active');
+        }
+
+        this.applyFilters();
+    },
+
+    initWheelPickers() {
+        this.createWheelPicker('wheelScrollFrom', 'dateFromSelected');
+        this.createWheelPicker('wheelScrollTo', 'dateToSelected');
+    },
+
+    createWheelPicker(scrollElementId, storageKey) {
+        const scrollElement = document.getElementById(scrollElementId);
+        if (!scrollElement) return;
+        
+        scrollElement.innerHTML = '';
+
+        const today = new Date();
+        const startDate = new Date(today.getFullYear(), today.getMonth(), 1);
+        const endDate = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+
+        const minDate = new Date(startDate);
+        minDate.setDate(minDate.getDate() - 60);
+        
+        const maxDate = new Date(endDate);
+        maxDate.setDate(maxDate.getDate() + 60);
+
+        let currentDate = new Date(minDate);
+        const dates = [];
+
+        while (currentDate <= maxDate) {
+            dates.push(new Date(currentDate));
+            currentDate.setDate(currentDate.getDate() + 1);
+        }
+
+        dates.forEach((date) => {
+            const item = document.createElement('div');
+            item.className = 'wheel-picker-item';
+            const dateStr = date.toLocaleDateString('uk-UA', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            item.textContent = dateStr;
+            item.dataset.date = date.toISOString().split('T')[0];
+            scrollElement.appendChild(item);
+        });
+
+        const savedDate = localStorage.getItem(storageKey);
+        if (savedDate) {
+            const items = scrollElement.querySelectorAll('.wheel-picker-item');
+            const selectedItem = Array.from(items).find(item => item.dataset.date === savedDate);
+            if (selectedItem) {
+                this.scrollToItem(scrollElement, selectedItem);
+            }
+        }
+
+        scrollElement.addEventListener('scroll', () => {
+            this.updateSelectedInWheel(scrollElement, storageKey);
+        });
+
+        this.updateSelectedInWheel(scrollElement, storageKey);
+    },
+
+    scrollToItem(scrollElement, item) {
+        const itemPosition = item.offsetTop - scrollElement.offsetHeight / 2 + item.offsetHeight / 2;
+        scrollElement.scrollTop = itemPosition;
+    },
+
+    updateSelectedInWheel(scrollElement, storageKey) {
+        const items = scrollElement.querySelectorAll('.wheel-picker-item');
+        const scrollCenter = scrollElement.scrollTop + scrollElement.offsetHeight / 2;
+
+        let closestItem = items[0];
+        let closestDistance = Math.abs(closestItem.offsetTop + closestItem.offsetHeight / 2 - scrollCenter);
+
+        items.forEach(item => {
+            const distance = Math.abs(item.offsetTop + item.offsetHeight / 2 - scrollCenter);
+            if (distance < closestDistance) {
+                closestDistance = distance;
+                closestItem = item;
+            }
+        });
+
+        items.forEach(item => item.classList.remove('selected'));
+        closestItem.classList.add('selected');
+        localStorage.setItem(storageKey, closestItem.dataset.date);
+    },
+
+    populateFilterCompanies() {
+        const select = document.getElementById('filterCompany');
+        const selectAllTime = document.getElementById('filterCompanyAllTime');
+        const selectCustom = document.getElementById('filterCompanyCustom');
+        
+        [select, selectAllTime, selectCustom].forEach(elem => {
+            if (!elem) return;
+            const currentOptions = Array.from(elem.options).map(o => o.value);
+            
+            Object.entries(this.companies).forEach(([key, company]) => {
+                if (!currentOptions.includes(key)) {
+                    const option = document.createElement('option');
+                    option.value = key;
+                    option.textContent = company.name;
+                    elem.appendChild(option);
+                }
+            });
+        });
+    },
+
+    applyAllTimeFilter() {
+        localStorage.removeItem('dateFromSelected');
+        localStorage.removeItem('dateToSelected');
+        this.renderHistory();
+    },
+
+    applyFilters() {
+        this.renderHistory();
+    },
+
+    resetFilters() {
+        localStorage.removeItem('dateFromSelected');
+        localStorage.removeItem('dateToSelected');
+        document.getElementById('filterCompany').value = '';
+        document.getElementById('filterCompanyAllTime').value = '';
+        document.getElementById('filterCompanyCustom').value = '';
+        this.setFilterMode('current-month');
+    },
+
+    getFilteredEntries() {
+        const activeMode = document.querySelector('.filter-mode-btn.active')?.textContent || '';
+        let dateFrom = '';
+        let dateTo = '';
+        let companyKey = '';
+
+        if (activeMode.includes('Поточний місяць')) {
+            const now = new Date();
+            const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+            dateFrom = startOfMonth.toISOString().split('T')[0];
+            const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+            dateTo = endOfMonth.toISOString().split('T')[0];
+            const el = document.getElementById('filterCompany');
+            companyKey = el ? el.value : '';
+        } else if (activeMode.includes('Весь час')) {
+            const el = document.getElementById('filterCompanyAllTime');
+            companyKey = el ? el.value : '';
+        } else if (activeMode.includes('Вибірково')) {
+            dateFrom = localStorage.getItem('dateFromSelected') || '';
+            dateTo = localStorage.getItem('dateToSelected') || '';
+            const el = document.getElementById('filterCompanyCustom');
+            companyKey = el ? el.value : '';
+        }
+
+        return this.entries.filter(entry => {
+            let matches = true;
+
+            if (dateFrom && entry.date < dateFrom) {
+                matches = false;
+            }
+
+            if (dateTo && entry.date > dateTo) {
+                matches = false;
+            }
+
+            if (companyKey) {
+                const selectedCompany = this.companies[companyKey];
+                if (selectedCompany && entry.company !== selectedCompany.name) {
+                    matches = false;
+                }
+            }
+
+            return matches;
+        });
+    },
+
+    renderHistory() {
+        const list = document.getElementById('historyList');
+        if (!list) return;
+        
+        const filteredEntries = this.getFilteredEntries();
+
+        if (filteredEntries.length === 0) {
+            list.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">Немає записів</p>';
+            return;
+        }
+
+        const totalAmount = filteredEntries.reduce((sum, entry) => sum + entry.amount, 0);
+
+        list.innerHTML = `
+            <div style="background: var(--bg-secondary); border-radius: 12px; padding: 15px; margin-bottom: 20px; text-align: center; border: 1px solid var(--border);">
+                <div style="font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 5px;">Сума за період</div>
+                <div style="font-size: 2rem; font-weight: bold; color: var(--accent);">${totalAmount.toFixed(2)} грн</div>
+            </div>
+            ${filteredEntries.map((entry, index) => `
+                <div class="history-item">
+                    <div class="history-item-header">
+                        <div class="history-item-date">${new Date(entry.date).toLocaleDateString('uk-UA')}</div>
+                        <div class="history-item-amount">${entry.amount.toFixed(2)} грн</div>
+                    </div>
+                    <div class="history-item-company">${entry.company}</div>
+                    <div class="history-item-detail">
+                        <span>${entry.input} ${entry.type === 'km' ? 'км' : 'ходок'}</span>
+                        <button class="btn btn-danger" onclick="app.deleteEntry(${this.entries.indexOf(entry)})">🗑️ Видалити</button>
+                    </div>
+                </div>
+            `).join('')}
+        `;
+    },
+
+    deleteEntry(index) {
+        if (confirm('Видалити запис?')) {
+            this.entries.splice(index, 1);
+            this.saveUserData();
+            this.updateTotal();
+            this.renderHistory();
+        }
+    },
+
+    showAddDay() {
+        this.selectedCompany = null;
+        const select = document.getElementById('companySelect');
+        if (select) select.value = '';
+        document.getElementById('inputFieldsContainer').innerHTML = '';
+        document.getElementById('computedResult').style.display = 'none';
+        this.showPage('addDayPage');
+    },
+
+    goToMain() {
+        this.showPage('mainPage');
+    },
+
+    showPage(pageId) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        const page = document.getElementById(pageId);
+        if (page) page.classList.add('active');
+    }
+};
+
+document.addEventListener('click', (e) => {
+    if (e.target.id === 'addCompanyModal') {
+        app.closeModal();
+    }
+    if (e.target.id === 'settingsModal') {
+        app.closeModal();
+    }
+});
+
+app.init();
+</script>
+</body>
+</html>
